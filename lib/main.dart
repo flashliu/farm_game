@@ -6,6 +6,8 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
 
+FarmGame game = FarmGame();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   Flame.device.fullScreen();
@@ -26,7 +28,7 @@ class App extends StatelessWidget {
       child: Stack(
         alignment: Alignment.topLeft,
         children: [
-          Positioned.fill(child: GameWidget(game: FarmGame())),
+          Positioned.fill(child: GameWidget(game: game)),
           const UserPanel(),
           const Align(
             alignment: Alignment.bottomCenter,

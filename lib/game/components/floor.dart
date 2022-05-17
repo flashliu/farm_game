@@ -1,21 +1,27 @@
+import 'package:farm/game/spires.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 
 enum FloorState {
-  hovered,
   nomal,
+  disable,
 }
 
 class Floor extends SpriteGroupComponent with Hoverable, GestureHitboxes {
+  bool hovered = false;
+
   Floor({
-    required Map<FloorState, Sprite>? sprites,
+    FloorState current = FloorState.disable,
     required Vector2 position,
     required Vector2 size,
-  }) : super(sprites: sprites, position: position, size: size);
+  }) : super(position: position, size: size, current: current);
 
   @override
   Future<void> onLoad() async {
-    current = FloorState.nomal;
+    sprites = {
+      FloorState.nomal: Sprites.nomalFloor,
+      FloorState.disable: Sprites.disableFloor,
+    };
     final hitBox = PolygonHitbox([
       Vector2(0, size.y / 2),
       Vector2(size.x / 2, size.y),
@@ -28,13 +34,13 @@ class Floor extends SpriteGroupComponent with Hoverable, GestureHitboxes {
 
   @override
   onHoverEnter(info) {
-    current = FloorState.hovered;
+    hovered = true;
     return true;
   }
 
   @override
   onHoverLeave(info) {
-    current = FloorState.nomal;
+    hovered = false;
     return true;
   }
 }
