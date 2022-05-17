@@ -29,7 +29,7 @@ class _ActionPanelState extends State<ActionPanel> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10),
               child: Image.asset(
-                "assets/images/store.png",
+                "assets/images/shop.png",
                 width: 50,
                 height: 50,
               ),

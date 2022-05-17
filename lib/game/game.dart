@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:farm/game/components/floor_manager.dart';
 import 'package:farm/game/components/game_map.dart';
 import 'package:flame/game.dart';
@@ -15,7 +17,16 @@ class FarmGame extends FlameGame
       gameMap,
       floorManager,
     ]);
-    camera.snapTo(Vector2(580, 380));
+    initialCamara();
+  }
+
+  initialCamara() {
+    if (Platform.isIOS || Platform.isAndroid) {
+      camera.zoom = 0.7;
+      camera.snapTo(Vector2(450, 340));
+    } else {
+      camera.snapTo(Vector2(520, 260));
+    }
   }
 
   // @override
