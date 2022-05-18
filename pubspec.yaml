@@ -31,6 +31,10 @@ dependencies:
     sdk: flutter
 
   flame:
+    git:
+      url: https://github.com/flame-engine/flame.git
+      ref: main
+      path: packages/flame
   intl: ^0.17.0
   desktop_window: ^0.4.0
 
