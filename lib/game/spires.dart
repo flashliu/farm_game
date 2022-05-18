@@ -3,17 +3,17 @@ import 'package:flame/flame.dart';
 import 'package:flame/widgets.dart';
 
 class Sprites {
-  static Sprite getSprite({
-    required String assets,
+  static Sprite getSprite(
+    String assets, {
     required double x,
     required double y,
-    required double width,
-    required double height,
+    required double w,
+    required double h,
   }) {
     return Sprite(
       Flame.images.fromCache(assets),
       srcPosition: Vector2(x, y),
-      srcSize: Vector2(width, height),
+      srcSize: Vector2(w, h),
     );
   }
 
@@ -21,26 +21,11 @@ class Sprites {
 
   static Sprite getFloor(double x, double y) {
     return getSprite(
-      assets: "floors.png",
+      "floors.png",
       x: x,
       y: y,
-      width: floorSize.x,
-      height: floorSize.y,
-    );
-  }
-
-  static Sprite getBtns(
-    double x,
-    double y,
-    double width,
-    double height,
-  ) {
-    return getSprite(
-      assets: "btns.png",
-      x: x,
-      y: y,
-      width: floorSize.x,
-      height: floorSize.y,
+      w: floorSize.x,
+      h: floorSize.y,
     );
   }
 
@@ -48,13 +33,33 @@ class Sprites {
 
   static Sprite get nomalFloor => getFloor(1, 366);
 
-  static Sprite get shopBtn => getBtns(1, 237, 82, 89);
+  static Sprite get shopBtn {
+    return getSprite(
+      "btns.png",
+      x: 1,
+      y: 237,
+      w: 82,
+      h: 89,
+    );
+  }
 
-  static Sprite get expandIcon => getSprite(
-        assets: "floors.png",
-        x: 923,
-        y: 599,
-        width: 93,
-        height: 92,
-      );
+  static Sprite get expandIcon {
+    return getSprite(
+      "floors.png",
+      x: 923,
+      y: 599,
+      w: 93,
+      h: 92,
+    );
+  }
+
+  static Sprite get seedToast {
+    return getSprite(
+      "btns.png",
+      x: 687,
+      y: 338,
+      w: 66,
+      h: 73,
+    );
+  }
 }

@@ -10,6 +10,7 @@ class FarmGame extends FlameGame
   late Vector2 startPositon;
   late GameMap gameMap;
   late FloorManager floorManager;
+
   @override
   Future<void>? onLoad() async {
     await Flame.images.load('floors.png');
@@ -58,11 +59,5 @@ class FarmGame extends FlameGame
     camera.snapTo(value);
 
     super.onDragUpdate(pointerId, info);
-  }
-
-  @override
-  onTapUp(pointerId, info) {
-    floorManager.stopEffect();
-    super.onTapUp(pointerId, info);
   }
 }

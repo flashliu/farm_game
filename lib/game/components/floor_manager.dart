@@ -3,10 +3,20 @@ import 'package:farm/game/spires.dart';
 import 'package:flame/components.dart';
 
 class FloorManager extends PositionComponent with HasGameRef, Tappable {
-  void stopEffect() {
+  void stopColorEffect() {
     for (var element in children) {
-      if (element is Floor && !element.effect.isPaused) {
-        element.stopEffect();
+      if (element is Floor && element.colorEffect.isPaused == false) {
+        element.stopColorEffect();
+      }
+    }
+  }
+
+  void resetSeedToast() {
+    for (var element in children) {
+      if (element is Floor &&
+          element.current == FloorState.nomal &&
+          element.colorEffect.isPaused) {
+        element.resetSeedToast();
       }
     }
   }
@@ -25,10 +35,18 @@ class FloorManager extends PositionComponent with HasGameRef, Tappable {
           curCol * (size.y / 2 + 5) + curRow * (size.y / 2 + 5),
         );
         return Floor(
-          current: i == 0 ? FloorState.nomal : FloorState.disable,
+          current: i <= 2 ? FloorState.nomal : FloorState.disable,
           size: size,
           position: curPosition,
-          canExpand: i == 1,
+          canExpand: i == 3,
+          onTap: (floor) {
+            stopColorEffect();
+            if (floor.current == FloorState.nomal) {
+              floor.startColorEffect();
+              floor.removeSeedToast();
+            }
+            resetSeedToast();
+          },
         );
       }),
     );
