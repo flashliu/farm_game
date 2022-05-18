@@ -2,29 +2,37 @@ import 'package:farm/game/components/floor.dart';
 import 'package:farm/game/spires.dart';
 import 'package:flame/components.dart';
 
-class FloorManager extends PositionComponent with HasGameRef {
+class FloorManager extends PositionComponent with HasGameRef, Tappable {
+  void stopEffect() {
+    for (var element in children) {
+      if (element is Floor && !element.effect.isPaused) {
+        element.stopEffect();
+      }
+    }
+  }
+
   @override
   Future<void>? onLoad() async {
-    final size = Sprites.floorSize / 1.12;
-    const rows = 5;
+    final size = Sprites.floorSize / 1.4;
+    const rows = 6;
     addAll(
-      List.generate(15, (i) {
-        final curRow = (i / rows).floor();
-        final curCol = (i % rows).floor();
+      List.generate(24, (i) {
+        final curRow = (i % rows).floor();
+        final curCol = (i / rows).floor();
 
         final curPosition = Vector2(
-          curRow * (size.x / 2 + 10) + curCol * (size.x / 2 + 10),
-          curCol * (size.y / 2 + 5) - curRow * (size.y / 2 + 5),
+          curRow * (size.x / 2 + 10) - curCol * (size.x / 2 + 10),
+          curCol * (size.y / 2 + 5) + curRow * (size.y / 2 + 5),
         );
         return Floor(
-          current: curRow != 0 ? FloorState.nomal : FloorState.disable,
+          current: i == 0 ? FloorState.nomal : FloorState.disable,
           size: size,
           position: curPosition,
+          canExpand: i == 1,
         );
       }),
     );
-    angle = 0.003;
-    position = gameRef.camera.position + Vector2(625, 520);
+    position = gameRef.camera.position + Vector2(840, 416);
     return super.onLoad();
   }
 }

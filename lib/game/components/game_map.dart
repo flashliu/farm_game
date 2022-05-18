@@ -5,7 +5,7 @@ class GameMap extends SpriteComponent with HasGameRef, Draggable {
   @override
   Future<void>? onLoad() async {
     sprite = await gameRef.loadSprite('background.jpg');
-    size = sprite!.originalSize;
+    size = sprite!.srcSize;
     position = Vector2.zero();
     return super.onLoad();
   }

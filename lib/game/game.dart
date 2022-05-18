@@ -6,13 +6,14 @@ import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 
 class FarmGame extends FlameGame
-    with HasDraggables, HasHoverables, HasCollisionDetection {
+    with HasTappables, HasDraggables, HasCollisionDetection {
   late Vector2 startPositon;
   late GameMap gameMap;
   late FloorManager floorManager;
   @override
   Future<void>? onLoad() async {
-    await Flame.images.load('sprites.png');
+    await Flame.images.load('floors.png');
+    await Flame.images.load('btns.png');
     gameMap = GameMap();
     floorManager = FloorManager();
     await addAll([
@@ -23,6 +24,7 @@ class FarmGame extends FlameGame
   }
 
   initialCamara() {
+    camera.speed = 500;
     if (Platform.isIOS || Platform.isAndroid) {
       camera.zoom = 0.7;
       camera.snapTo(Vector2(450, 340));
@@ -36,26 +38,31 @@ class FarmGame extends FlameGame
 
   @override
   void onDragStart(pointerId, info) {
-    startPositon = info.eventPosition.viewport..add(camera.position);
+    startPositon = info.eventPosition.viewport + camera.position;
     super.onDragStart(pointerId, info);
   }
 
   @override
   void onDragUpdate(pointerId, info) {
-    final value = info.eventPosition.viewport.clone()..sub(startPositon);
-    final leftLimit = value.x + gameMap.position.x >= 0;
-    final topLimit = value.y + gameMap.position.y >= 0;
-    final rightLimit =
-        gameMap.size.x + gameMap.position.x - size.x + value.x <= 0;
-    final bottomLimit =
-        gameMap.size.y + gameMap.position.y - size.y + value.y <= 0;
-
-    if (leftLimit || topLimit || rightLimit || bottomLimit) {
-      startPositon = info.eventPosition.viewport..add(camera.position);
+    final value = startPositon - info.eventPosition.viewport;
+    final min = Vector2.zero();
+    final max = gameMap.size - canvasSize;
+    value.clamp(min, max);
+    if (value.x == min.x ||
+        value.x == max.x ||
+        value.y == min.y ||
+        value.y == max.y) {
+      startPositon = info.eventPosition.viewport + camera.position;
       return;
     }
-    camera.snapTo(-value);
+    camera.snapTo(value);
 
     super.onDragUpdate(pointerId, info);
+  }
+
+  @override
+  onTapUp(pointerId, info) {
+    floorManager.stopEffect();
+    super.onTapUp(pointerId, info);
   }
 }
