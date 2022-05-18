@@ -1,3 +1,4 @@
+import 'package:farm/global.dart';
 import 'package:farm/widgets/action_btn.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +10,9 @@ class ActionPanel extends StatefulWidget {
 }
 
 class _ActionPanelState extends State<ActionPanel> {
-  Widget buildBtn(String icon) {
+  Widget buildBtn(String icon, {VoidCallback? onTap}) {
     return ActionBtn(
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
         child: Image.asset(

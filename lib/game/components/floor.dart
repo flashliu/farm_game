@@ -111,7 +111,6 @@ class Floor extends SpriteGroupComponent
     if (onTap != null) {
       onTap!(this);
     }
-    super.onTapUp(info);
     return false;
   }
 }
