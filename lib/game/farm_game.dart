@@ -1,24 +1,24 @@
 import 'dart:io';
 
 import 'package:farm/game/components/floor_manager.dart';
-import 'package:farm/game/components/game_map.dart';
+import 'package:farm/game/components/world.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 
 class FarmGame extends FlameGame
     with HasTappables, HasDraggables, HasCollisionDetection {
   late Vector2 startPositon;
-  late GameMap gameMap;
+  late World world;
   late FloorManager floorManager;
 
   @override
   Future<void>? onLoad() async {
     await Flame.images.load('floors.png');
     await Flame.images.load('btns.png');
-    gameMap = GameMap();
+    world = World();
     floorManager = FloorManager();
     await addAll([
-      gameMap,
+      world,
       floorManager,
     ]);
     initialCamara();
@@ -47,7 +47,7 @@ class FarmGame extends FlameGame
   void onDragUpdate(pointerId, info) {
     final value = startPositon - info.eventPosition.viewport;
     final min = Vector2.zero();
-    final max = gameMap.size - canvasSize;
+    final max = world.size - canvasSize;
     value.clamp(min, max);
     if (value.x == min.x ||
         value.x == max.x ||

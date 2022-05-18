@@ -1,6 +1,5 @@
 import 'package:intl/intl.dart';
-
-import 'game/game.dart';
+import 'game/farm_game.dart';
 
 class Global {
   static FarmGame game = FarmGame();

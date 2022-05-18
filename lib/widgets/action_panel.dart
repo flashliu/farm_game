@@ -1,4 +1,3 @@
-import 'package:farm/global.dart';
 import 'package:farm/widgets/action_btn.dart';
 import 'package:flutter/material.dart';
 

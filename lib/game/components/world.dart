@@ -1,7 +1,7 @@
 import 'package:farm/game/components/floor_manager.dart';
 import 'package:flame/components.dart';
 
-class GameMap extends SpriteComponent with HasGameRef, Tappable {
+class World extends SpriteComponent with HasGameRef, Tappable {
   late Vector2 startPositon;
   @override
   Future<void>? onLoad() async {
