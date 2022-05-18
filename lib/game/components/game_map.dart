@@ -16,7 +16,7 @@ class GameMap extends SpriteComponent with HasGameRef, Tappable {
     for (var element in parent!.children) {
       if (element is FloorManager) {
         element.stopColorEffect();
-        element.addSeedToast();
+        element.addFloorTip();
       }
     }
     return true;

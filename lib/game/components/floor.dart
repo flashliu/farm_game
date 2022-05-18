@@ -1,16 +1,25 @@
+import 'package:farm/game/components/floor_tip.dart';
 import 'package:farm/game/spires.dart';
 import 'package:flame/collisions.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flutter/material.dart';
 
-enum FloorState {
+enum FloorType {
   nomal,
   disable,
 }
 
+enum FloorState {
+  waitExpand,
+  canExpand,
+  canHarvest,
+}
+
 class Floor extends SpriteGroupComponent
     with Tappable, GestureHitboxes, HasGameRef {
+  final FloorState state;
+  final Function(Floor)? onTap;
   final ColorEffect colorEffect = ColorEffect(
     const Color.fromARGB(255, 255, 225, 197),
     const Offset(0, 0.4),
@@ -20,25 +29,21 @@ class Floor extends SpriteGroupComponent
       infinite: true,
     ),
   );
-
-  SpriteComponent? seedToast;
-
-  final bool canExpand;
-  final Function(Floor)? onTap;
+  FloorTip? floorTip;
 
   Floor({
-    FloorState current = FloorState.disable,
+    FloorType current = FloorType.disable,
     required Vector2 position,
     required Vector2 size,
-    this.canExpand = false,
+    this.state = FloorState.waitExpand,
     this.onTap,
   }) : super(position: position, size: size, current: current);
 
   @override
   Future<void> onLoad() async {
     sprites = {
-      FloorState.nomal: Sprites.nomalFloor,
-      FloorState.disable: Sprites.disableFloor,
+      FloorType.nomal: Sprites.nomalFloor,
+      FloorType.disable: Sprites.disableFloor,
     };
     final hitBox = PolygonHitbox([
       Vector2(0, size.y / 2),
@@ -48,7 +53,7 @@ class Floor extends SpriteGroupComponent
     ]);
     add(hitBox);
     add(colorEffect);
-    if (canExpand) {
+    if (state == FloorState.canExpand) {
       final expandIconSize = Sprites.expandIcon.srcSize / 1.8;
       add(
         SpriteComponent(
@@ -62,47 +67,32 @@ class Floor extends SpriteGroupComponent
       );
     }
 
-    if (current == FloorState.nomal) {
-      addSeedToast();
+    if (current == FloorType.nomal) {
+      addFloorTip();
     }
 
     colorEffect.pause();
     return super.onLoad();
   }
 
-  void addSeedToast() {
-    final seedToastSize = Sprites.seedToast.srcSize / 1.6;
-    if (seedToast != null) return;
-    seedToast = SpriteComponent(
-      sprite: Sprites.seedToast,
+  void addFloorTip() {
+    final seedTipSize = Sprites.seedTip.srcSize / 1.6;
+    if (floorTip != null) return;
+    floorTip = FloorTip(
+      sprite: Sprites.seedTip,
       position: Vector2(
-        size.x / 2 - seedToastSize.x / 2,
-        seedToastSize.y - size.y,
+        size.x / 2 - seedTipSize.x / 2,
+        seedTipSize.y - size.y,
       ),
-      size: seedToastSize,
+      size: seedTipSize,
     );
-    seedToast!.add(MoveByEffect(
-      Vector2(0, 15),
-      EffectController(
-        duration: 0.6,
-        reverseDuration: 0.6,
-        infinite: true,
-        curve: Curves.easeIn,
-        reverseCurve: Curves.easeInBack,
-      ),
-    ));
-    add(seedToast!);
+    add(floorTip!);
   }
 
-  void resetSeedToast() {
-    removeSeedToast();
-    addSeedToast();
-  }
-
-  void removeSeedToast() {
-    if (seedToast != null && seedToast!.isMounted) {
-      remove(seedToast!);
-      seedToast = null;
+  void removeFloorTip() {
+    if (floorTip != null && floorTip!.isMounted) {
+      remove(floorTip!);
+      floorTip = null;
     }
   }
 

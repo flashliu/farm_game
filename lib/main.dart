@@ -1,12 +1,10 @@
 import 'package:desktop_window/desktop_window.dart';
-import 'package:farm/game/game.dart';
+import 'package:farm/global.dart';
 import 'package:farm/widgets/action_panel.dart';
 import 'package:farm/widgets/user_panel.dart';
 import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
-
-FarmGame game = FarmGame();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,16 +23,20 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
-      child: Stack(
-        alignment: Alignment.topLeft,
-        children: [
-          Positioned.fill(child: GameWidget(game: game)),
-          const UserPanel(),
-          const Align(
-            alignment: Alignment.bottomCenter,
-            child: ActionPanel(),
-          )
-        ],
+      child: MaterialApp(
+        home: Scaffold(
+          body: Stack(
+            alignment: Alignment.topLeft,
+            children: [
+              Positioned.fill(child: GameWidget(game: Global.game)),
+              const UserPanel(),
+              const Align(
+                alignment: Alignment.bottomCenter,
+                child: ActionPanel(),
+              )
+            ],
+          ),
+        ),
       ),
     );
   }

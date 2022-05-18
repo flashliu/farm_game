@@ -53,7 +53,7 @@ class Sprites {
     );
   }
 
-  static Sprite get seedToast {
+  static Sprite get seedTip {
     return getSprite(
       "btns.png",
       x: 687,

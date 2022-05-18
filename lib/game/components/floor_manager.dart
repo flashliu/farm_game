@@ -11,18 +11,18 @@ class FloorManager extends PositionComponent with HasGameRef, Tappable {
     }
   }
 
-  void removeSeedToast() {
+  void removeFloorTip() {
     for (var element in children) {
-      if (element is Floor && element.current == FloorState.nomal) {
-        element.removeSeedToast();
+      if (element is Floor && element.current == FloorType.nomal) {
+        element.removeFloorTip();
       }
     }
   }
 
-  void addSeedToast() {
+  void addFloorTip() {
     for (var element in children) {
-      if (element is Floor && element.current == FloorState.nomal) {
-        element.addSeedToast();
+      if (element is Floor && element.current == FloorType.nomal) {
+        element.addFloorTip();
       }
     }
   }
@@ -41,17 +41,16 @@ class FloorManager extends PositionComponent with HasGameRef, Tappable {
           curCol * (size.y / 2 + 5) + curRow * (size.y / 2 + 5),
         );
         return Floor(
-          current: i < 20 ? FloorState.nomal : FloorState.disable,
+          current: i < 20 ? FloorType.nomal : FloorType.disable,
           size: size,
           position: curPosition,
-          canExpand: i == 20,
+          state: i == 20 ? FloorState.canExpand : FloorState.waitExpand,
           onTap: (floor) {
-            stopColorEffect();
-            if (floor.current == FloorState.nomal) {
+            if (floor.current == FloorType.nomal) {
+              stopColorEffect();
               floor.startColorEffect();
-              // floor.removeSeedToast();
+              removeFloorTip();
             }
-            removeSeedToast();
           },
         );
       }),

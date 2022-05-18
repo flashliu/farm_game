@@ -1,4 +1,4 @@
-import 'package:farm/utils.dart';
+import 'package:farm/global.dart';
 import 'package:flutter/material.dart';
 
 class UserPanel extends StatefulWidget {
@@ -60,6 +60,7 @@ class _UserPanelState extends State<UserPanel> {
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
                   overflow: TextOverflow.ellipsis,
+                  color: Colors.white,
                 ),
                 textDirection: TextDirection.ltr,
               ),
@@ -100,6 +101,7 @@ class _UserPanelState extends State<UserPanel> {
                 style: TextStyle(
                   fontSize: 12,
                   fontWeight: FontWeight.w400,
+                  color: Colors.white,
                 ),
                 textDirection: TextDirection.ltr,
               ),
@@ -139,7 +141,7 @@ class _UserPanelState extends State<UserPanel> {
                 const SizedBox(height: 4),
                 Expanded(
                   child: renderTextBox(
-                    Utils.formatNumber(12980000),
+                    Global.formatNumber(12980000),
                     icon: Image.asset(
                       "assets/images/money.png",
                     ),
