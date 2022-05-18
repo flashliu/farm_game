@@ -72,6 +72,7 @@ class Floor extends SpriteGroupComponent
 
   void addSeedToast() {
     final seedToastSize = Sprites.seedToast.srcSize / 1.6;
+    if (seedToast != null) return;
     seedToast = SpriteComponent(
       sprite: Sprites.seedToast,
       position: Vector2(
@@ -101,6 +102,7 @@ class Floor extends SpriteGroupComponent
   void removeSeedToast() {
     if (seedToast != null && seedToast!.isMounted) {
       remove(seedToast!);
+      seedToast = null;
     }
   }
 
