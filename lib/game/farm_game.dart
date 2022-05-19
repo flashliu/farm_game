@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:farm/game/components/floor_manager.dart';
 import 'package:farm/game/components/world.dart';
-import 'package:flame/flame.dart';
 import 'package:flame/game.dart';
 
 class FarmGame extends FlameGame
@@ -13,8 +12,6 @@ class FarmGame extends FlameGame
 
   @override
   Future<void>? onLoad() async {
-    await Flame.images.load('floors.png');
-    await Flame.images.load('btns.png');
     world = World();
     floorManager = FloorManager();
     await addAll([

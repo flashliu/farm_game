@@ -1,4 +1,4 @@
-import 'package:farm/game/components/floor_manager.dart';
+import 'package:farm/global.dart';
 import 'package:flame/components.dart';
 
 class World extends SpriteComponent with HasGameRef, Tappable {
@@ -13,13 +13,8 @@ class World extends SpriteComponent with HasGameRef, Tappable {
 
   @override
   onTapUp(info) {
-    for (var element in parent!.children) {
-      if (element is FloorManager) {
-        element.stopColorEffect();
-        element.addFloorTip();
-        element.currentFloor = null;
-      }
-    }
+    Global.game.floorManager.resetCurrentFloor();
+    Global.closeBootomSheet();
     return true;
   }
 }

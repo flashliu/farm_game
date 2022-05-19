@@ -1,65 +1,76 @@
 import 'package:farm/game/components/floor.dart';
-import 'package:farm/game/spires.dart';
+import 'package:farm/game/sprites.dart';
+import 'package:farm/global.dart';
 import 'package:flame/components.dart';
 
 class FloorManager extends PositionComponent with HasGameRef, Tappable {
-  Floor? currentFloor;
+  late List<Floor> floorList;
+  Floor? _currentFloor;
+  set currentFloor(Floor? v) {
+    if (_currentFloor != null) {
+      _currentFloor!.removeCheckedTip();
+    }
+    _currentFloor = v;
+  }
+
+  Floor? get currentFloor => _currentFloor;
+
   @override
   Future<void>? onLoad() async {
     final size = Sprites.floorSize / 1.4;
     const rows = 6;
-    addAll(
-      List.generate(24, (i) {
-        final curRow = (i % rows).floor();
-        final curCol = (i / rows).floor();
+    floorList = List.generate(24, (i) {
+      final curRow = (i % rows).floor();
+      final curCol = (i / rows).floor();
 
-        final curPosition = Vector2(
-          curRow * (size.x / 2 + 10) - curCol * (size.x / 2 + 10),
-          curCol * (size.y / 2 + 5) + curRow * (size.y / 2 + 5),
-        );
-        return Floor(
-          current: i < 20 ? FloorType.nomal : FloorType.disable,
-          size: size,
-          position: curPosition,
-          state: i == 20 ? FloorState.canExpand : FloorState.waitExpand,
-          onTap: (floor) {
-            if (floor.current == FloorType.nomal) {
-              currentFloor = floor;
-              if (currentFloor != null && currentFloor!.colorEffect.isPaused) {
-                stopColorEffect();
-                currentFloor?.startColorEffect();
-                removeFloorTip();
-              }
-            }
-          },
-        );
-      }),
-    );
+      final curPosition = Vector2(
+        curRow * (size.x / 2 + 10) - curCol * (size.x / 2 + 10),
+        curCol * (size.y / 2 + 5) + curRow * (size.y / 2 + 5),
+      );
+      return Floor(
+        current: i < 20 ? FloorType.nomal : FloorType.disable,
+        size: size,
+        position: curPosition,
+        state: i == 20 ? FloorState.canExpand : FloorState.canSeed,
+        onTap: (floor) => currentFloor = floor,
+      );
+    });
+    addAll(floorList);
     position = gameRef.camera.position + Vector2(840, 416);
     return super.onLoad();
   }
 
-  void stopColorEffect() {
+  @override
+  void update(double dt) {
+    if (currentFloor != null) {
+      currentFloor!.addCheckedTip();
+      hideAllFloorTip();
+      Global.showSeedList();
+    } else {
+      showAllFloorTip();
+    }
+    super.update(dt);
+  }
+
+  void hideAllFloorTip() {
     for (var element in children) {
-      if (element is Floor && element.colorEffect.isPaused == false) {
-        element.stopColorEffect();
+      if (element is Floor) {
+        element.showFloorTip = false;
       }
     }
   }
 
-  void removeFloorTip() {
+  void showAllFloorTip() {
     for (var element in children) {
-      if (element is Floor && element.current == FloorType.nomal) {
-        element.removeFloorTip();
+      if (element is Floor) {
+        element.showFloorTip = true;
       }
     }
   }
 
-  void addFloorTip() {
-    for (var element in children) {
-      if (element is Floor && element.current == FloorType.nomal) {
-        element.addFloorTip();
-      }
-    }
+  void resetCurrentFloor() {
+    if (currentFloor == null) return;
+    currentFloor!.removeCheckedTip();
+    currentFloor = null;
   }
 }

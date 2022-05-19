@@ -1,4 +1,6 @@
+import 'package:farm/game/sprites.dart';
 import 'package:farm/widgets/action_btn.dart';
+import 'package:flame/widgets.dart';
 import 'package:flutter/material.dart';
 
 class ActionPanel extends StatefulWidget {
@@ -9,15 +11,15 @@ class ActionPanel extends StatefulWidget {
 }
 
 class _ActionPanelState extends State<ActionPanel> {
-  Widget buildBtn(String icon, {VoidCallback? onTap}) {
+  Widget buildBtn(Sprite sprite, {VoidCallback? onTap}) {
     return ActionBtn(
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Image.asset(
-          icon,
+        child: SizedBox(
           width: 60,
           height: 60,
+          child: SpriteWidget(sprite: sprite, anchor: Anchor.center),
         ),
       ),
     );
@@ -41,11 +43,8 @@ class _ActionPanelState extends State<ActionPanel> {
           textDirection: TextDirection.ltr,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            buildBtn("assets/images/shop.png"),
-            buildBtn("assets/images/shop.png"),
-            buildBtn("assets/images/shop.png"),
-            buildBtn("assets/images/shop.png"),
-            buildBtn("assets/images/shop.png"),
+            buildBtn(Sprites.shop),
+            buildBtn(Sprites.store),
           ],
         ),
       ),
