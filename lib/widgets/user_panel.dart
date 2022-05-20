@@ -124,8 +124,8 @@ class _UserPanelState extends State<UserPanel> {
           renderBox(
             width: 100,
             image: const DecorationImage(
-              image: NetworkImage(
-                "https://img.zfn9.com/08/3c/11370b8deb40788e69ae84a98d15e7db.jpg",
+              image: AssetImage(
+                "assets/images/avatar.jpg",
               ),
               fit: BoxFit.cover,
             ),
@@ -135,7 +135,7 @@ class _UserPanelState extends State<UserPanel> {
             width: 120,
             child: Column(
               children: [
-                Expanded(child: renderTextBox("晚风吹啊吹晚风吹啊吹")),
+                Expanded(child: renderTextBox("晚风吹啊吹")),
                 const SizedBox(height: 4),
                 Expanded(child: renderProgressBar()),
                 const SizedBox(height: 4),

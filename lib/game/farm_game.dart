@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:farm/game/components/floor_manager.dart';
 import 'package:farm/game/components/world.dart';
 import 'package:flame/game.dart';
+import 'package:flutter/foundation.dart';
 
 class FarmGame extends FlameGame
     with HasTappables, HasDraggables, HasCollisionDetection {
@@ -23,11 +24,15 @@ class FarmGame extends FlameGame
 
   initialCamara() {
     camera.speed = 500;
-    if (Platform.isIOS || Platform.isAndroid) {
-      camera.zoom = 0.7;
-      camera.snapTo(Vector2(450, 340));
-    } else {
+    if (!kIsWeb) {
+      if (Platform.isIOS || Platform.isAndroid) {
+        camera.zoom = 0.7;
+        camera.snapTo(Vector2(450, 340));
+        return;
+      }
       camera.snapTo(Vector2(520, 260));
+    } else {
+      camera.snapTo(Vector2(100, 50));
     }
   }
 
