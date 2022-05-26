@@ -148,6 +148,16 @@ class Floor extends SpriteGroupComponent
     floorTip = null;
   }
 
+  void hideFloorTip() {
+    if (floorTip == null || floorTip!.paint.color.opacity == 0) return;
+    floorTip!.setAlpha(0);
+  }
+
+  void visibleFloorTip() {
+    if (floorTip == null || floorTip!.paint.color.opacity == 1) return;
+    floorTip!.setAlpha(255);
+  }
+
   void removeCheckedTip() {
     if (checkedTip == null) return;
     checkedTip!.reset();

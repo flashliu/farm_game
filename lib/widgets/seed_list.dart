@@ -20,6 +20,7 @@ class SeedItem extends StatelessWidget {
             return true;
           },
         );
+        Global.game.floorManager.currentFloor!.removeFloorTip();
         Global.game.floorManager.resetCurrentFloor();
         if (nextFloor == null) {
           Global.closeBootomSheet();

@@ -43,8 +43,8 @@ class FloorManager extends PositionComponent with HasGameRef, Tappable {
   @override
   void update(double dt) {
     if (currentFloor != null) {
+      currentFloor!.hideFloorTip();
       currentFloor!.addCheckedTip();
-      hideAllFloorTip();
       Global.showSeedList();
     } else {
       showAllFloorTip();
@@ -71,6 +71,7 @@ class FloorManager extends PositionComponent with HasGameRef, Tappable {
   void resetCurrentFloor() {
     if (currentFloor == null) return;
     currentFloor!.removeCheckedTip();
+    currentFloor!.visibleFloorTip();
     currentFloor = null;
   }
 }
